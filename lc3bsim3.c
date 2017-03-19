@@ -879,7 +879,7 @@ void latch_datapath_values() {
 	}
 
 	if (GetLD_BEN(CURRENT_LATCHES.MICROINSTRUCTION) == 1) {
-		printf("%d\n", ((CURRENT_LATCHES.IR >> 9) & 0x0001) & CURRENT_LATCHES.P);
+/*		printf("%d\n", ((CURRENT_LATCHES.IR >> 9) & 0x0001) & CURRENT_LATCHES.P); */
 		NEXT_LATCHES.BEN = ((CURRENT_LATCHES.IR >> 11) & 0x0001) & CURRENT_LATCHES.N | ((CURRENT_LATCHES.IR >> 10) & 0x0001) &
 			CURRENT_LATCHES.Z | ((CURRENT_LATCHES.IR >> 9) & 0x0001) & CURRENT_LATCHES.P;
 	}
@@ -971,7 +971,7 @@ void latch_datapath_values() {
 			if (GetLSHF1(CURRENT_LATCHES.MICROINSTRUCTION) == 1) {
 				operand = operand << 1;
 			}
-			NEXT_LATCHES.PC = op1 + operand;
+			NEXT_LATCHES.PC = Low16bits(op1 + operand);
 			break;
 		}
 	}
