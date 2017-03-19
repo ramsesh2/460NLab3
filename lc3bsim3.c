@@ -1,6 +1,6 @@
 /*
-    Ramseshadri Muthukumar
-	rm48763
+	Name: Ramseshadri Muthukumar
+	UTEID: rm48763
 */
 
 /***************************************************************/
@@ -549,8 +549,8 @@ int main(int argc, char *argv[]) {
 
     printf("LC-3b Simulator\n\n");
 
-    /*initialize(argv[1], argv[2], argc - 2);*/
-	initialize("ucode3.txt", "test.txt", 1);
+    initialize(argv[1], argv[2], argc - 2);
+	/*initialize("ucode3", "test.txt", 1);*/
 		
     if ( (dumpsim_file = fopen( "dumpsim", "w" )) == NULL ) {
 	printf("Error: Can't open dumpsim file\n");
