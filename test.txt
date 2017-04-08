@@ -1,3 +1,98 @@
-0x3000
-0x5020
-0xF025
+.ORIG x4000		;Beginning
+	AND R0 R0 #0
+Start	ADD R0 R1 R2
+	ADD R3 R4 #15 ; R3 = 15
+	ADD R5 R6 #-16 ; R5 = -16
+	ADD R7 R7 x-10 ; R7 = -16
+				;Empty Line
+	ADD R7 R0 xF ; R7 = 15
+	AND R0 R1 R2 ; R0 = 0
+	AND R3 R4 #15 ; R3 = 0
+	AND R5 R6 #-16 ; R5 = 0
+	AND R7 R7 x-10		;10		R7 = 0
+	AND R7 R0 xF ; R7 = 0
+	LEA R7 LD1 ; R7 = 40b4
+	LEA R6 LD2 ; R6 = 40b6
+	LDW R6 R7 #1 ; R6 = 0EE0
+	LDW R7 R7 #0 ; R7 = F00F
+	XOR R5 R6 R7 ; R5 = FEEF
+	XOR R1 R2 R3 ; R1 = 0 
+	XOR R3 R4 #15 ; R3 = 000F
+	XOR R5 R6 #-16 ; R5 = f110
+	XOR R7 R7 x-10		;20		R7 = 0fff
+	XOR R7 R0 xF ; R7 = 000f
+	LEA R1 LD1 ; R1 = 40b4
+	LEA R3 LD2 ; R3 = 40b6
+	LDB R0 R1 #0 ; R0 = 0F
+	LDB R0 R1 #1 ; R0 = F0
+	LDB R0 R1 #2 ; R0 = E0
+	LDB R0 R1 #3 ; R0 = 0E
+	LDB R2 R3 #-1 ; R2 = F0 
+	LDB R2 R3 #-2 ; R2 = 0F
+	LDB R4 R5 x-20		;30  R4 = 0
+	LDB R6 R7 x1F ; r6 = 0
+	LDW R0 R1 #31 ; r0 = 0
+	LDW R2 R3 #-32 ; r2 = 705f
+	LDW R4 R5 x-20 ; r4 = 0
+	LDW R6 R7 x1F ; r6 = 0
+	LEA R0 Start ; r0 = 4002
+	LEA R7 End ; r7 = 407c
+	LEA R4 Middle ; r4 = 40a2 CYCLE: 426
+	NOT R1 R1 ; R1 = bf4b
+	NOT R0 R7 ; R0 = bf83
+	NOT R7 R0 ; R7 = 407c
+	ADD R0 R0 #0 ; R0 = bf83 CYCLE: 462 IC: 43
+	LSHF R0 R1 #0 ; R0 = bf4b
+	LSHF R2 R3 #15 ; R2 = 0
+	LSHF R4 R5 x0 ; R4 = F110
+	LSHF R6 R7 xF ; R6 = 0
+	RSHFL R0 R1 #0 ; R0 = bf4b
+	RSHFL R2 R3 #15 ; R2 = 0
+	RSHFL R4 R5 x0 ; R4 = f110
+	RSHFL R6 R7 xF ; R6 = 0
+	RSHFA R0 R1 #0 ; R0 = bf4b
+	ADD R3 R3 R3 ; R3 = 816C
+	RSHFA R2 R3 #15 ; R2 = ffff
+	RSHFA R4 R5 x0 ; R4 = f110
+	RSHFA R6 R7 xF ; R6 = 0 CYCLE: 579 IC: 55
+	STB R0 R1 #31 ; 0xbf6a (49002) with 0x004b
+	STB R2 R3 #-32 ; 0x814c with 0x00ff
+	STB R4 R5 x-20 ; 0xf0f0 with 0x0010	
+	STB R6 R7 x1F ; 0x409b with 0x0000
+	STW R0 R1 #31 ; 0xbf88 with 0x4b00 IC: 59
+	STW R2 R3 #-32 ; 0x812c with 0xffff
+	STW R4 R5 x-20 ; 0xf0d0 with 0xf110
+End	STW R6 R7 x1F ; 0x40ba with 0x0000 CYCLE: 699 IC: 63
+A	BRn B	; NOT TAKEN PC 0x4080
+	ADD R3 R4 #15 	; R3 = f11f
+B	BRz C	; NOT TAKEN PC 0x4084
+	ADD R3 R4 #15 	; R3 = f11f
+C	BRp D	;  NOT TAKEN PC 0x4088	
+	ADD R3 R4 #15	; R3 = f11f	CYCLE: 754 IC: 69
+D	BRnz E	; TAKEN PC 0x408e	
+	ADD R3 R4 #15	; SKIPPED
+E	BRnp F	; TAKEN PC 0x492
+	ADD R3 R4 #15	; SKIPPED
+F	BRzp G	; NOT TAKEN PC 0x4094
+	ADD R3 R4 #15	; R3 = f11f
+G	BRnzp H	; TAKEN PC 0x409a 
+	ADD R3 R4 #15	; SKIPPED
+H	BR I	; TAKEN PC 0x409e CYCLE: 802 IC: 74	
+	ADD R3 R4 #15	; SKIPPED
+I	LEA R3 End	; CYCLE: 820 IC: 77
+Middle	JMP R3		;Middle 
+	JSR Start
+	JSR Middle
+	JSR END
+	JSRR R0
+	JSRR R7
+	JSRR R4
+	TRAP x25
+	HALT
+LD1	.FILL xF00F
+LD2	.FILL x0EE0
+	.FILL #0001
+	.FILL #-0111
+	.FILL x4567
+	.FILL x-0FFF
+	.END
