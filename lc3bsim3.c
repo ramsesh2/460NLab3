@@ -15,6 +15,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 /***************************************************************/
 /*                                                             */
@@ -549,8 +550,8 @@ int main(int argc, char *argv[]) {
 
     printf("LC-3b Simulator\n\n");
 
-    initialize(argv[1], argv[2], argc - 2);
-	/*initialize("ucode3", "test.txt", 1);*/
+ /*   initialize(argv[1], argv[2], argc - 2); */
+	initialize("ucode3.txt", "test.txt", 1);
 		
     if ( (dumpsim_file = fopen( "dumpsim", "w" )) == NULL ) {
 	printf("Error: Can't open dumpsim file\n");
@@ -894,12 +895,12 @@ void latch_datapath_values() {
 	}
 	
 	if (GetLD_CC(CURRENT_LATCHES.MICROINSTRUCTION) == 1) {
-		if (BUS > 0) {
+		if ((int16_t)BUS > 0) {
 			NEXT_LATCHES.P = 1;
 			NEXT_LATCHES.Z = 0;
 			NEXT_LATCHES.N = 0;
 		}
-		else if (BUS == 0) {
+		else if ((int16_t)BUS == 0) {
 			NEXT_LATCHES.P = 0;
 			NEXT_LATCHES.Z = 1;
 			NEXT_LATCHES.N = 0;
